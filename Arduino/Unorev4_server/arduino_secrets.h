@@ -1,0 +1,2 @@
+#define SECRET_SSID "6G-CPE-153528"
+#define SECRET_PASS "A1b2c3d4cz"
