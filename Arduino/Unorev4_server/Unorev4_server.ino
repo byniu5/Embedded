@@ -1,8 +1,13 @@
 #include "WifiS3.h"
-#include "arduino_secrets.h" 
+#if __has_include("arduino_secrets.local.h")
+#include "arduino_secrets.local.h"
+#else
+#include "arduino_secrets.h"
+#endif
 
 char ssid[] = SECRET_SSID;
 char pass[] = SECRET_PASS;
+char controlToken[] = SECRET_TOKEN;
 
 int status = WL_IDLE_STATUS;
 WifiServer server(80);
@@ -58,10 +63,10 @@ void loop() {
           currentLine += c;
         }
 
-      if (currentLine.endsWith("GET /H")) {
+      if (currentLine.indexOf(String("GET /H?token=") + controlToken + " ") >= 0) {
           digitalWrite(LED_BUILTIN, HIGH);               // GET /H turns the LED on
         }
-        if (currentLine.endsWith("GET /L")) {
+        if (currentLine.indexOf(String("GET /L?token=") + controlToken + " ") >= 0) {
           digitalWrite(LED_BUILTIN, LOW);                // GET /L turns the LED off
         }
     }
